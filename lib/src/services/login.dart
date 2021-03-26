@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 
 
 
-
 class Login extends StatelessWidget {
 
   final String loginQuery = r"""

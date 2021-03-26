@@ -1,5 +1,4 @@
 
-
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:organiser_app/src/components/events/event_list_item.dart';

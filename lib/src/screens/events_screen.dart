@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:organiser_app/src/services/events_list.dart';
 
+
 class EventsScreen extends StatefulWidget {
   @override
   _EventsScreenState createState() => _EventsScreenState();

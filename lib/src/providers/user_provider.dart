@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:organiser_app/src/models/user_model.dart';
 
+
 class UserProvider extends ChangeNotifier {
   User user;
   bool isLoggedIn = false;

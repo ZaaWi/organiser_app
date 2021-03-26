@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class BottomNavItem extends StatelessWidget {
 
   final bool isActive;

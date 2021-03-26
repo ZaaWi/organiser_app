@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:organiser_app/src/components/navigationbar/navigation_item.dart';
 
+
 class BottomNav extends StatelessWidget {
 
   final int currentIndex;

@@ -1,5 +1,6 @@
 import 'package:organiser_app/src/models/event_model.dart';
 
+
 class Ticket {
   int id;
   String ticketName;

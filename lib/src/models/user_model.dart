@@ -1,5 +1,4 @@
 
-
 class User {
   int id;
   String userName;

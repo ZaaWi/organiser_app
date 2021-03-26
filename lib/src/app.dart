@@ -5,6 +5,7 @@ import 'package:organiser_app/src/providers/user_provider.dart';
 import 'package:organiser_app/src/screens/login_screen.dart';
 import 'package:provider/provider.dart';
 
+
 class MyApp extends StatelessWidget {
 
 

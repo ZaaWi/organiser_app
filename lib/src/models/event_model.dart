@@ -1,6 +1,7 @@
 import 'package:organiser_app/src/models/ticket_model.dart';
 import 'package:intl/intl.dart';
 
+
 class Event {
   //TODO: Refactor with real data
   int id;
