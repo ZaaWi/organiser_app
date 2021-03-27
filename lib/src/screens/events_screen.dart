@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:organiser_app/src/screens/event_form_screen.dart';
 import 'package:organiser_app/src/services/events_list.dart';
 
 
@@ -63,6 +64,17 @@ class _EventsScreenState extends State<EventsScreen> {
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => EventFormScreen(),
+            ),
+          );
+        },
+        child: Icon(Icons.add),
       ),
     );
   }
