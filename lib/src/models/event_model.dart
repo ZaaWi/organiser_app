@@ -1,7 +1,6 @@
 import 'package:organiser_app/src/models/ticket_model.dart';
 import 'package:intl/intl.dart';
 
-
 class Event {
   //TODO: Refactor with real data
   int id;
@@ -15,19 +14,25 @@ class Event {
   int visitors;
   int limit;
   String city;
+  int cityID;
+  String imageID;
+  int categoryID;
 
   Event(
       {this.id,
-        this.title,
-        this.description,
-        this.dateTime,
-        this.tickets,
-        this.img,
-        this.location,
-        this.isAvailable,
-        this.visitors,
-        this.limit,
-        this.city});
+      this.title,
+      this.description,
+      this.dateTime,
+      this.tickets,
+      this.img,
+      this.location,
+      this.isAvailable,
+      this.visitors,
+      this.limit,
+      this.city,
+      this.imageID,
+      this.categoryID,
+      this.cityID});
 
   String getTime(String data) {
     final date = DateTime.parse(data);

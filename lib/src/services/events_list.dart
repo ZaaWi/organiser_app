@@ -8,7 +8,9 @@ import 'package:organiser_app/src/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
 
+
 class EventsList extends StatefulWidget {
+
 
 
   @override

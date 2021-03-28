@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:organiser_app/src/providers/upload_provider.dart';
 import 'package:organiser_app/src/screens/event_form_screen.dart';
 import 'package:organiser_app/src/services/events_list.dart';
+import 'package:provider/provider.dart';
 
 
 class EventsScreen extends StatefulWidget {
@@ -70,7 +72,10 @@ class _EventsScreenState extends State<EventsScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => EventFormScreen(),
+              builder: (context) => ChangeNotifierProvider(
+                builder: (context) => UploadProvider(),
+                child: EventFormScreen(),
+              ),
             ),
           );
         },

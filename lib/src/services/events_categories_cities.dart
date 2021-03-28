@@ -122,6 +122,8 @@ query getCities {
                 );
               }
               List<City> cities = [];
+              print(citiesResult.data);
+              print(citiesResult.data['cities']);
               for (var c in citiesResult.data['cities']) {
                 City city = City(
                   id: int.parse(c['id']),
