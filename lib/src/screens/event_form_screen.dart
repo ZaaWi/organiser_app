@@ -1,3 +1,4 @@
+import 'package:date_time_format/date_time_format.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:organiser_app/src/components/eventForm/form_image.dart';
@@ -26,6 +27,7 @@ class _EventFormScreenState extends State<EventFormScreen> {
   int _city;
   int _image;
   Event event;
+  String _dateTime;
 
 
   final _formKey = GlobalKey<FormState>();
@@ -97,7 +99,11 @@ class _EventFormScreenState extends State<EventFormScreen> {
                           lastDate: DateTime(2100),
                           icon: Icon(Icons.event),
                           dateLabelText: 'Date',
-                          onChanged: (val) => print(val),
+                          onChanged: (val) {
+                            _dateTime = val;
+                            print(DateTimeFormat.format(DateTime.parse(_dateTime)));
+
+                          },
                           validator: (val) {
                             print(val);
                             if (val == null || val.isEmpty) {
@@ -157,6 +163,7 @@ class _EventFormScreenState extends State<EventFormScreen> {
                   city: _chosenCityName,
                   cityID: _chosenCityID,
                   imageID: Provider.of<UploadProvider>(context).imageID,
+                  dateTime: _dateTime,
                 ),
               );
             });

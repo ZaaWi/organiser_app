@@ -1,3 +1,4 @@
+import 'package:date_time_format/date_time_format.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:organiser_app/src/api/api_config.dart';
@@ -16,7 +17,7 @@ class CreateEvent extends StatelessWidget {
   final String createEventMutation = r"""
 
 mutation createEvent ($title: String!, $description: String!, $category: ID!, $city: ID!,
- $image: [ID], $organiser: ID!) {
+ $image: [ID], $organiser: ID!, $date: DateTime!) {
   createEvent 
   (
     input: {
@@ -26,7 +27,8 @@ mutation createEvent ($title: String!, $description: String!, $category: ID!, $c
         category: $category,
         city: $city,
         image: $image,
-        organiser: $organiser
+        organiser: $organiser,
+        date: $date
       }
     }
   ) {
@@ -92,8 +94,10 @@ mutation createEvent ($title: String!, $description: String!, $category: ID!, $c
                     "city": event.cityID,
                     "category": event.categoryID,
                     "image": event.imageID,
-                    "organiser": Provider.of<UserProvider>(context).user.id
+                    "organiser": Provider.of<UserProvider>(context).user.id,
+                    "date": DateTimeFormat.format(DateTime.parse(event.dateTime))
                   });
+                  print(result.exception.toString());
                   Navigator.pop(context);
                 },
               ),

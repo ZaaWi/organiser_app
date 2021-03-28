@@ -126,6 +126,7 @@ query getMyEvents ($organiser_id: ID!) {
             city: e['city']['name'],
           );
           eventList.add(event);
+          print(e['date']);
         }
 
         return Column(
