@@ -31,8 +31,8 @@ class BottomNav extends StatelessWidget {
             child: InkWell(
               onTap: () => onChange(1),
               child: BottomNavItem(
-                icon: Icons.dashboard,
-                title: "dashboard",
+                icon: Icons.qr_code_scanner,
+                title: "attendance",
                 isActive: currentIndex == 1,
               ),
             ),
@@ -41,9 +41,19 @@ class BottomNav extends StatelessWidget {
             child: InkWell(
               onTap: () => onChange(2),
               child: BottomNavItem(
+                icon: Icons.dashboard,
+                title: "dashboard",
+                isActive: currentIndex == 2,
+              ),
+            ),
+          ),
+          Expanded(
+            child: InkWell(
+              onTap: () => onChange(3),
+              child: BottomNavItem(
                 icon: Icons.account_box,
                 title: "account",
-                isActive: currentIndex == 2,
+                isActive: currentIndex == 3,
               ),
             ),
           ),

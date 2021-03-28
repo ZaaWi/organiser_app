@@ -27,9 +27,11 @@ class _AppScreenState extends State<AppScreen> {
       case 0:
         return EventsScreen();
       case 1:
-        return Center(child: Container(child: Text("Profile Page"),));
+        return Center(child: Container(child: Text("qr code Page"),));
       case 2:
-        return Center(child: Container(child: Text("Menu Page"),));
+        return Center(child: Container(child: Text("dashboard Page"),));
+      case 3:
+        return Center(child: Container(child: Text('account'),),);
     }
   }
 

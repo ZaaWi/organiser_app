@@ -1,37 +1,32 @@
-import 'package:date_time_format/date_time_format.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:organiser_app/src/api/api_config.dart';
-import 'package:organiser_app/src/models/event_model.dart';
+import 'package:organiser_app/src/models/ticket_model.dart';
 import 'package:organiser_app/src/providers/user_provider.dart';
-import 'package:organiser_app/src/screens/ticket_form_screen.dart';
+import 'package:organiser_app/src/screens/app_screen.dart';
 import 'package:provider/provider.dart';
 
-class CreateEvent extends StatelessWidget {
-  Event event;
+class CreateTicket extends StatelessWidget {
+  Ticket ticket;
 
-  CreateEvent(this.event);
+  CreateTicket(this.ticket);
 
-  final String createEventMutation = r"""
+  final String createTicketMutation = r"""
 
-mutation createEvent ($title: String!, $description: String!, $category: ID!, $city: ID!,
- $image: [ID], $organiser: ID!, $date: DateTime!) {
-  createEvent 
+mutation createTicket ($name: String!, $event_ID: ID!, $quantity: Int!) {
+  createTickt 
   (
     input: {
       data: {
-        title: $title,
-        description: $description,
-        category: $category,
-        city: $city,
-        image: $image,
-        organiser: $organiser,
-        date: $date
+        name: $name,
+        event: $event_ID,
+        quantity: $quantity
+  
       }
     }
   ) {
-    event {
-      title
+    tickt {
+      name
       id
     }
   }
@@ -43,41 +38,46 @@ mutation createEvent ($title: String!, $description: String!, $category: ID!, $c
 
   @override
   Widget build(BuildContext context) {
+
     final HttpLink httpLink = HttpLink(gqlUrl);
     String token = Provider.of<UserProvider>(context).user.token;
 
     final AuthLink auth =
-        AuthLink(headerKey: 'Authorization', getToken: () => 'Bearer $token');
+    AuthLink(headerKey: 'Authorization', getToken: () => 'Bearer $token');
     final Link link = auth.concat(httpLink);
 
     final ValueNotifier<GraphQLClient> createClient =
-        ValueNotifier<GraphQLClient>(
+    ValueNotifier<GraphQLClient>(
       GraphQLClient(
         link: link,
         cache: GraphQLCache(),
       ),
     );
+
+
     return GraphQLProvider(
       client: createClient,
       child: Mutation(
         options: MutationOptions(
-          document: gql(createEventMutation),
+          document: gql(createTicketMutation),
         ),
         builder: (
-          RunMutation runMutation,
-          QueryResult result,
+            RunMutation runMutation,
+            QueryResult result,
         ) {
-          print(result.data);
-          if (result.isLoading) {
+          if(result.isLoading) {
             return Center(
               child: CircularProgressIndicator(
                 backgroundColor: Colors.red,
               ),
             );
           }
-          if (result.data != null) {
-            event.id = int.parse(result.data['createEvent']['event']['id']);
+          print('-------------------------------------');
+          if(result.data != null) {
+            print('-------------------------------------');
+            print(result.data);
           }
+          print(result.exception.toString());
 
           return AlertDialog(
             content: Text(
@@ -88,30 +88,35 @@ mutation createEvent ($title: String!, $description: String!, $category: ID!, $c
                 child: Text('yes'),
                 onPressed: () {
                   runMutation({
-                    "title": event.title,
-                    "description": event.description,
-                    "city": event.cityID,
-                    "category": event.categoryID,
-                    "image": event.imageID,
-                    "organiser": Provider.of<UserProvider>(context).user.id,
-                    "date":
-                        DateTimeFormat.format(DateTime.parse(event.dateTime))
+                    "name": ticket.ticketName,
+                    "quantity": ticket.quantity,
+                    "event_ID": ticket.event.id.toString(),
                   });
                   print(result.exception.toString());
+                  Navigator.pop(context);
                   Navigator.pop(context);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => TicketFormScreen(
-                        eventID: event.id,
-                      ),
+                      builder: (context) => AppScreen(),
                     ),
                   );
+
+                  // Navigator.pop(context);
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => TicketFormScreen(
+                  //       eventID: event.id,
+                  //     ),
+                  //   ),
+                  // );
 
                 },
               ),
             ],
           );
+
         },
       ),
     );
