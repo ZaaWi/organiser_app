@@ -144,13 +144,6 @@ class _EventFormScreenState extends State<EventFormScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // print('category: $_chosenCategoryName');
-          // print('city: $_chosenCityName');
-          // print('city id: $_chosenCityID');
-          // print('category id: $_chosenCategoryID');
-          // print('from root id: ${Provider.of<UploadProvider>(context).imageID}');
-          // print('in root');
-          // print(_formKey.currentState.validate());
           // if form is valid
           if (_formKey.currentState.validate() &&
               Provider.of<UploadProvider>(context).imageID != null) {

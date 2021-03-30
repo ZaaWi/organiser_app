@@ -1,9 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:organiser_app/src/api/api_config.dart';
 import 'package:organiser_app/src/components/navigationbar/bottom_nav.dart';
 import 'package:organiser_app/src/providers/user_provider.dart';
+import 'package:organiser_app/src/screens/attendance_screen.dart';
+import 'package:organiser_app/src/screens/dashboard_screen.dart';
 import 'package:organiser_app/src/screens/events_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -13,7 +14,6 @@ class AppScreen extends StatefulWidget {
 }
 
 class _AppScreenState extends State<AppScreen> {
-
   int _currentPage;
 
   @override
@@ -23,27 +23,33 @@ class _AppScreenState extends State<AppScreen> {
   }
 
   getPage(int page) {
-    switch(page) {
+    switch (page) {
       case 0:
         return EventsScreen();
       case 1:
-        return Center(child: Container(child: Text("qr code Page"),));
+        return AttendanceScreen();
       case 2:
-        return Center(child: Container(child: Text("dashboard Page"),));
+        return Center(
+          child: Container(
+            child: DashboardScreen(),
+          ),
+        );
       case 3:
-        return Center(child: Container(child: Text('account'),),);
+        return Center(
+          child: Container(
+            child: Text('account'),
+          ),
+        );
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     final HttpLink httpLink = HttpLink(gqlUrl);
     String token = Provider.of<UserProvider>(context).user.token;
 
     final AuthLink auth =
-    AuthLink(headerKey: 'Authorization', getToken: () => 'Bearer $token');
+        AuthLink(headerKey: 'Authorization', getToken: () => 'Bearer $token');
     final Link link = auth.concat(httpLink);
 
     final ValueNotifier<GraphQLClient> client = ValueNotifier<GraphQLClient>(
@@ -52,7 +58,6 @@ class _AppScreenState extends State<AppScreen> {
         cache: GraphQLCache(),
       ),
     );
-
 
     return GraphQLProvider(
       client: client,

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:organiser_app/src/api/api_config.dart';
 import 'package:organiser_app/src/models/event_model.dart';
+import 'package:organiser_app/src/screens/attendance_details_screen.dart';
 import 'package:organiser_app/src/screens/event_form_screen.dart';
 
 Widget ListItem({BuildContext context, Event event}) {
@@ -21,6 +22,24 @@ Widget ListItem({BuildContext context, Event event}) {
           context,
           MaterialPageRoute(
             builder: (context) => EventFormScreen(),
+          ),
+        );
+      },
+    ),
+  );
+}
+
+Widget eventsListItems({BuildContext context, Event event}) {
+  return Card(
+    child: ListTile(
+      title: Text('${event.title}'),
+      trailing: Text('${event.visitors} - ${event.limit}'),
+      onTap: () {
+        //TODO: navigate to attendance
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AttendanceDetailsScreen(event: event,),
           ),
         );
       },

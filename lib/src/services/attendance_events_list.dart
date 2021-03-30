@@ -1,4 +1,5 @@
 
+
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:organiser_app/src/components/lists/event_list_item.dart';
@@ -7,19 +8,14 @@ import 'package:organiser_app/src/models/ticket_model.dart';
 import 'package:organiser_app/src/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
-
-
-class EventsList extends StatefulWidget {
-
-
-
+class AttendanceEventList extends StatefulWidget {
   @override
-  _EventsListState createState() => _EventsListState();
+  _AttendanceEventListState createState() => _AttendanceEventListState();
 }
 
-class _EventsListState extends State<EventsList> {
+class _AttendanceEventListState extends State<AttendanceEventList> {
+
   final String getEventsQuery = r"""
-  
   
   
 query getMyEvents ($organiser_id: ID!) {
@@ -33,17 +29,8 @@ query getMyEvents ($organiser_id: ID!) {
   )
   {
     id
-    title
-    description
-    date
     visitors
-    category {
-      id
-      name
-    }
-    image {
-      formats:url
-    }
+    title
     limit
     location
     city {
@@ -61,25 +48,23 @@ query getMyEvents ($organiser_id: ID!) {
 
                   """;
 
-
-
   Widget getEventItems (List<Event> evs) {
     List<Widget> list = List<Widget>();
     for (Event e in evs) {
       list.add(
-          ListItem(
-            context: context,
-            event: e,
-          ),
+        eventsListItems(
+          context: context,
+          event: e,
+        ),
       );
     }
     return Column(
       children: list,
     );
   }
-
   @override
   Widget build(BuildContext context) {
+    print('user id : ${Provider.of<UserProvider>(context).user.id}');
     return Query(
       options: QueryOptions(
         document: gql(getEventsQuery),
@@ -101,34 +86,30 @@ query getMyEvents ($organiser_id: ID!) {
             child: Text('null'),
           );
         }
-
         List<Event> eventList = [];
         for (var e in result.data['events']) {
           List<Ticket> tickets = [];
           for (var t in e['tickts']) {
             tickets.add(
-              Ticket(
-                ticketName: t['name'],
-                id: int.parse(t['id']),
-                quantity: t['quantity'],
-              )
+                Ticket(
+                  ticketName: t['name'],
+                  id: int.parse(t['id']),
+                  quantity: t['quantity'],
+                )
             );
           }
           Event event = Event(
             title: e['title'],
-            description: e['description'],
-            dateTime: e['date'],
-            img: e['image'][0]['formats'],
             tickets: tickets,
             visitors: e['visitors'],
             limit: e['limit'],
             location: e['location'],
             city: e['city']['name'],
+            id: int.parse(e['id']),
           );
           eventList.add(event);
           print(e['date']);
         }
-
         return Column(
           children: [
             getEventItems(eventList),

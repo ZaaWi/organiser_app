@@ -7,9 +7,10 @@ import 'package:organiser_app/src/screens/app_screen.dart';
 import 'package:provider/provider.dart';
 
 class CreateTicket extends StatelessWidget {
-  Ticket ticket;
+  //TODO: change to final
+   final Ticket ticket;
 
-  CreateTicket(this.ticket);
+  CreateTicket({this.ticket});
 
   final String createTicketMutation = r"""
 
@@ -72,12 +73,10 @@ mutation createTicket ($name: String!, $event_ID: ID!, $quantity: Int!) {
               ),
             );
           }
-          print('-------------------------------------');
           if(result.data != null) {
             print('-------------------------------------');
             print(result.data);
           }
-          print(result.exception.toString());
 
           return AlertDialog(
             content: Text(
@@ -101,17 +100,6 @@ mutation createTicket ($name: String!, $event_ID: ID!, $quantity: Int!) {
                       builder: (context) => AppScreen(),
                     ),
                   );
-
-                  // Navigator.pop(context);
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => TicketFormScreen(
-                  //       eventID: event.id,
-                  //     ),
-                  //   ),
-                  // );
-
                 },
               ),
             ],

@@ -96,13 +96,13 @@ class _TicketFormScreenState extends State<TicketFormScreen> {
           if(_formKey.currentState.validate()) {
             setState(() {
               createTicket = CreateTicket(
-                Ticket(
-                  ticketName: ticketName,
-                  quantity: ticketQuantity,
-                  event: Event(
-                    id: widget.eventID
-                  )
-                )
+                ticket: Ticket(
+                    ticketName: ticketName,
+                    quantity: ticketQuantity,
+                    event: Event(
+                        id: widget.eventID
+                    )
+                ),
               );
             });
           }
