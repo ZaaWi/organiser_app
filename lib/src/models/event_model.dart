@@ -1,3 +1,4 @@
+import 'package:organiser_app/src/models/city_model.dart';
 import 'package:organiser_app/src/models/ticket_model.dart';
 import 'package:intl/intl.dart';
 
@@ -17,22 +18,27 @@ class Event {
   int cityID;
   String imageID;
   int categoryID;
+  City cityObject;
+  String category;
 
-  Event(
-      {this.id,
-      this.title,
-      this.description,
-      this.dateTime,
-      this.tickets,
-      this.img,
-      this.location,
-      this.isAvailable,
-      this.visitors,
-      this.limit,
-      this.city,
-      this.imageID,
-      this.categoryID,
-      this.cityID});
+  Event({
+    this.id,
+    this.title,
+    this.description,
+    this.dateTime,
+    this.tickets,
+    this.img,
+    this.location,
+    this.isAvailable,
+    this.visitors,
+    this.limit,
+    this.city,
+    this.imageID,
+    this.categoryID,
+    this.cityID,
+    this.cityObject,
+    this.category,
+  });
 
   String getTime(String data) {
     final date = DateTime.parse(data);

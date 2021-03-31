@@ -4,6 +4,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:organiser_app/src/api/api_config.dart';
 import 'package:organiser_app/src/models/category_model.dart';
 import 'package:organiser_app/src/models/city_model.dart';
+import 'package:organiser_app/src/models/event_model.dart';
 import 'package:organiser_app/src/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -15,11 +16,19 @@ typedef void FormCallback(
 class EventsCategoriesAndCities extends StatefulWidget {
   final FormCallback cityCallback;
   final FormCallback categoryCallback;
+  final String formType;
+  final Event event;
 
-  EventsCategoriesAndCities({this.cityCallback,this.categoryCallback});
+  EventsCategoriesAndCities({
+    this.cityCallback,
+    this.categoryCallback,
+    this.formType,
+    this.event,
+  });
 
   @override
-  _EventsCategoriesAndCitiesState createState() => _EventsCategoriesAndCitiesState();
+  _EventsCategoriesAndCitiesState createState() =>
+      _EventsCategoriesAndCitiesState();
 }
 
 class _EventsCategoriesAndCitiesState extends State<EventsCategoriesAndCities> {
@@ -142,6 +151,7 @@ query getCities {
                     child: Padding(
                       padding: EdgeInsets.all(15),
                       child: DropdownSearch<String>(
+                        selectedItem: widget.formType == 'EDIT' ? widget.event.category : null,
                         showSearchBox: true,
                         mode: Mode.DIALOG,
                         showSelectedItem: true,
@@ -163,8 +173,8 @@ query getCities {
                             }
                           }
                           widget.categoryCallback(
-                              chosenCategoryID,
-                              chosenCategory,
+                            chosenCategoryID,
+                            chosenCategory,
                           );
                         },
                       ),
@@ -178,6 +188,7 @@ query getCities {
                     child: Padding(
                       padding: EdgeInsets.all(15),
                       child: DropdownSearch<String>(
+                        selectedItem: widget.formType == 'EDIT' ? widget.event.cityObject.name : null,
                         showSearchBox: true,
                         mode: Mode.DIALOG,
                         showSelectedItem: true,

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:organiser_app/src/models/event_model.dart';
 import 'package:organiser_app/src/screens/ticket_form_screen.dart';
+import 'package:organiser_app/src/services/tickets_list.dart';
 
 class TicketScreen extends StatefulWidget {
-  Event event;
+  final Event event;
 
   TicketScreen({this.event});
 
@@ -16,7 +17,7 @@ class _TicketScreenState extends State<TicketScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ticket'),
+        title: Text('tickets'),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20),
@@ -24,14 +25,9 @@ class _TicketScreenState extends State<TicketScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //TODO: tickets
-            (widget.event.tickets == null ?
-                Center(
-                  child: Text('null'),
-                )
-                :
-                Center(
-                  child: Text('not null'),
-                ))
+            TicketsList(
+              event: widget.event,
+            ),
 
           ],
         ),
@@ -41,7 +37,10 @@ class _TicketScreenState extends State<TicketScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder:(context) => TicketFormScreen(),
+              builder:(context) => TicketFormScreen(
+                event: widget.event,
+                formType: 'ADD',
+              ),
             ),
           );
         },

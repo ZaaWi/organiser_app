@@ -16,5 +16,13 @@ class City {
     }
   }
 
+  String getCityNameByID (int id) {
+    if (this.id == id) {
+      return this.name;
+    }
+    else {
+      return null;
+    }
+  }
 
 }

@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:organiser_app/src/components/lists/event_list_item.dart';
+import 'package:organiser_app/src/models/city_model.dart';
 import 'package:organiser_app/src/models/event_model.dart';
 import 'package:organiser_app/src/models/ticket_model.dart';
 import 'package:organiser_app/src/providers/user_provider.dart';
@@ -43,11 +44,13 @@ query getMyEvents ($organiser_id: ID!) {
     }
     image {
       formats:url
+      id
     }
     limit
     location
     city {
       name
+      id
     }
     tickts {
       id
@@ -67,7 +70,7 @@ query getMyEvents ($organiser_id: ID!) {
     List<Widget> list = List<Widget>();
     for (Event e in evs) {
       list.add(
-          ListItem(
+          listItem(
             context: context,
             event: e,
           ),
@@ -115,15 +118,24 @@ query getMyEvents ($organiser_id: ID!) {
             );
           }
           Event event = Event(
+            id: int.parse(e['id']),
             title: e['title'],
             description: e['description'],
             dateTime: e['date'],
             img: e['image'][0]['formats'],
+            imageID: e['image'][0]['id'],
             tickets: tickets,
             visitors: e['visitors'],
             limit: e['limit'],
             location: e['location'],
             city: e['city']['name'],
+            cityID: int.parse(e['city']['id']),
+            cityObject: City(
+              name: e['city']['name'],
+              id: int.parse(e['city']['id']),
+            ),
+            category: e['category']['name'],
+            categoryID: int.parse(e['category']['id']),
           );
           eventList.add(event);
           print(e['date']);

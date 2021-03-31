@@ -4,118 +4,103 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:organiser_app/src/api/api_config.dart';
 import 'package:organiser_app/src/models/event_model.dart';
 import 'package:organiser_app/src/providers/user_provider.dart';
-import 'package:organiser_app/src/screens/tickets_screen.dart';
 import 'package:provider/provider.dart';
 
-class CreateEvent extends StatelessWidget {
+class EditEvent extends StatelessWidget {
+
   final Event event;
-  // int eventID;
-  CreateEvent({@required this.event});
 
-  final String createEventMutation = r"""
 
-mutation createEvent ($title: String!, $description: String!, $category: ID!, $city: ID!,
- $image: [ID], $organiser: ID!, $date: DateTime!, $limit: Int!, $location: String!) {
-  createEvent 
-  (
+  EditEvent({this.event});
+  final String editEventMutation = r"""
+  
+  
+   mutation EditEvent ($image_ID: [ID], $title: String!, $description: String!, $location: String!, 
+$limit: Int! $date: DateTime! $category: ID!, $city: ID!, $event_ID: ID!) {
+  updateEvent (
     input: {
+      where: {
+        id: $event_ID
+      }
       data: {
         title: $title,
         description: $description,
+        location: $location,
+        limit: $limit,
         category: $category,
         city: $city,
-        image: $image,
-        organiser: $organiser,
+        image: $image_ID,
         date: $date,
-        limit: $limit,
-        location: $location,
       }
     }
-  ) {
+  )  {
     event {
-      title
       id
+      title
     }
   }
-  
 }
+
 
 
                   """;
 
+
+
   @override
   Widget build(BuildContext context) {
-    Event createdEvent;
+
     final HttpLink httpLink = HttpLink(gqlUrl);
     String token = Provider.of<UserProvider>(context).user.token;
 
     final AuthLink auth =
-        AuthLink(headerKey: 'Authorization', getToken: () => 'Bearer $token');
+    AuthLink(headerKey: 'Authorization', getToken: () => 'Bearer $token');
     final Link link = auth.concat(httpLink);
 
-    final ValueNotifier<GraphQLClient> createClient =
-        ValueNotifier<GraphQLClient>(
+    final ValueNotifier<GraphQLClient> editClient =
+    ValueNotifier<GraphQLClient>(
       GraphQLClient(
         link: link,
         cache: GraphQLCache(),
       ),
     );
+
+
     return GraphQLProvider(
-      client: createClient,
+      client: editClient,
       child: Mutation(
         options: MutationOptions(
-          document: gql(createEventMutation),
+          document: gql(editEventMutation),
           onCompleted: (dynamic resultData) {
-            createdEvent = Event(
-              id: int.parse(resultData['createEvent']['event']['id']),
-              title: event.title,
-              dateTime: event.dateTime,
-              visitors: event.visitors,
-              cityID: event.cityID,
-              categoryID: event.categoryID,
-              location: event.location,
-              description: event.description,
-              limit: event.limit,
-            );
+            print(resultData);
             Navigator.pop(context);
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => TicketScreen(
-                  event: createdEvent,
-                ),
-              ),
-            );
           }
         ),
         builder: (
-          RunMutation runMutation,
-          QueryResult result,
+        RunMutation runMutation,
+            QueryResult result
         ) {
-          if (result.isLoading) {
-            return Center(
-              child: CircularProgressIndicator(
-                backgroundColor: Colors.red,
-              ),
-            );
-          }
+          print(result.exception.toString());
+
+
           return AlertDialog(
             content: Text(
-              'okay',
+              'edit ?',
             ),
             actions: [
               FlatButton(
                 child: Text('yes'),
                 onPressed: () {
                   runMutation({
+                    "event_ID": event.id,
                     "title": event.title,
                     "description": event.description,
                     "city": event.cityID,
                     "category": event.categoryID,
-                    "image": event.imageID,
+                    "image_ID": event.imageID,
                     "organiser": Provider.of<UserProvider>(context).user.id,
                     "date":
-                        DateTimeFormat.format(DateTime.parse(event.dateTime)),
+                    DateTimeFormat.format(DateTime.parse(event.dateTime)),
                     "limit": event.limit,
                     "location": event.location,
                   }

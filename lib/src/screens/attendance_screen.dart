@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:organiser_app/src/services/attendance_events_list.dart';
-import 'package:organiser_app/src/services/events_list.dart';
 
 class AttendanceScreen extends StatefulWidget {
   @override

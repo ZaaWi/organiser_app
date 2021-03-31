@@ -10,7 +10,7 @@ class CreateTicket extends StatelessWidget {
   //TODO: change to final
    final Ticket ticket;
 
-  CreateTicket({this.ticket});
+  CreateTicket({this.ticket,});
 
   final String createTicketMutation = r"""
 
@@ -20,9 +20,8 @@ mutation createTicket ($name: String!, $event_ID: ID!, $quantity: Int!) {
     input: {
       data: {
         name: $name,
+        quantity: $quantity,
         event: $event_ID,
-        quantity: $quantity
-  
       }
     }
   ) {
@@ -33,6 +32,7 @@ mutation createTicket ($name: String!, $event_ID: ID!, $quantity: Int!) {
   }
   
 }
+
 
 
                   """;
@@ -61,6 +61,17 @@ mutation createTicket ($name: String!, $event_ID: ID!, $quantity: Int!) {
       child: Mutation(
         options: MutationOptions(
           document: gql(createTicketMutation),
+          onCompleted: (dynamic resultData) {
+            print(resultData);
+            Navigator.pop(context);
+            Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AppScreen(),
+              ),
+            );
+          }
         ),
         builder: (
             RunMutation runMutation,
@@ -73,11 +84,6 @@ mutation createTicket ($name: String!, $event_ID: ID!, $quantity: Int!) {
               ),
             );
           }
-          if(result.data != null) {
-            print('-------------------------------------');
-            print(result.data);
-          }
-
           return AlertDialog(
             content: Text(
               'okay',
@@ -89,17 +95,10 @@ mutation createTicket ($name: String!, $event_ID: ID!, $quantity: Int!) {
                   runMutation({
                     "name": ticket.ticketName,
                     "quantity": ticket.quantity,
-                    "event_ID": ticket.event.id.toString(),
+                    "event_ID": ticket.event.id,
                   });
                   print(result.exception.toString());
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AppScreen(),
-                    ),
-                  );
+
                 },
               ),
             ],

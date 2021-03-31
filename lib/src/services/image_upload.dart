@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 
 class ImageUpload extends StatefulWidget {
-  var multipartFile;
+  final multipartFile;
 
 
   ImageUpload({@required this.multipartFile});

@@ -2,10 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:organiser_app/src/api/api_config.dart';
 import 'package:organiser_app/src/models/event_model.dart';
+import 'package:organiser_app/src/models/ticket_model.dart';
+import 'package:organiser_app/src/providers/upload_provider.dart';
 import 'package:organiser_app/src/screens/attendance_details_screen.dart';
 import 'package:organiser_app/src/screens/event_form_screen.dart';
+import 'package:organiser_app/src/screens/ticket_form_screen.dart';
+import 'package:provider/provider.dart';
 
-Widget ListItem({BuildContext context, Event event}) {
+Widget listItem({BuildContext context, Event event}) {
   return Card(
     child: ListTile(
       leading: CircleAvatar(
@@ -21,7 +25,13 @@ Widget ListItem({BuildContext context, Event event}) {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => EventFormScreen(),
+            builder: (context) => ChangeNotifierProvider(
+              builder: (context) => UploadProvider(),
+              child: EventFormScreen(
+                event: event,
+                formType: 'EDIT',
+              ),
+            ),
           ),
         );
       },
@@ -40,6 +50,28 @@ Widget eventsListItems({BuildContext context, Event event}) {
           context,
           MaterialPageRoute(
             builder: (context) => AttendanceDetailsScreen(event: event,),
+          ),
+        );
+      },
+    ),
+  );
+}
+
+
+Widget ticketsListItems ({BuildContext context, Ticket ticket}) {
+  return Card(
+    child: ListTile(
+      title: Text('${ticket.ticketName}'),
+      trailing: Text('${ticket.quantity}'),
+      onTap: () {
+        //TODO: navigate to ticket edit form
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder:(context) => TicketFormScreen(
+              formType: 'EDIT',
+              ticket: ticket,
+            ),
           ),
         );
       },
