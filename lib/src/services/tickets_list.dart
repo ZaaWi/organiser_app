@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:organiser_app/src/api/api_config.dart';
+import 'package:organiser_app/src/api/graphql_operations/queries.dart';
 import 'package:organiser_app/src/components/lists/event_list_item.dart';
 import 'package:organiser_app/src/models/event_model.dart';
 import 'package:organiser_app/src/models/ticket_model.dart';
@@ -20,27 +21,7 @@ class TicketsList extends StatefulWidget {
 }
 
 class _TicketsListState extends State<TicketsList> {
-  final String getEventTicketsQuery = r"""
-  query getEventTickets ($event_ID: ID!) {
-  tickts
-  (
-    where: {
-      event: {
-        id: $event_ID
-      }
-    }
-  )
-  {
-    id
-    name
-    quantity
-    event{
-      id
-      title
-    }
-  }
-}
-""";
+
 
   Widget getTicketItems (List<Ticket> tickets) {
     List<Widget> list = List<Widget>();
@@ -61,7 +42,7 @@ class _TicketsListState extends State<TicketsList> {
   @override
   Widget build(BuildContext context) {
 
-    final HttpLink httpLink = HttpLink(gqlUrl);
+    final HttpLink httpLink = HttpLink(kGraphQLURL);
     String token = Provider.of<UserProvider>(context).user.token;
 
     final AuthLink auth =

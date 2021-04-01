@@ -57,7 +57,7 @@ class _ImageFormState extends State<ImageForm> {
           (_image == null
               ? CircleAvatar(
                   radius: 50,
-                  backgroundImage: NetworkImage('$apiUrl${widget.event.img}'),
+                  backgroundImage: NetworkImage('$kApiKey${widget.event.img}'),
                 )
               : CircleAvatar(
                   radius: 50,

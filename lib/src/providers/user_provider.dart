@@ -11,12 +11,20 @@ class UserProvider extends ChangeNotifier {
     int id,
     String userName,
     String token,
+    String avatar,
   }) {
     this.user = User(
       id: id,
       userName: userName,
       token: token,
+      avatar: avatar,
     );
     notifyListeners();
   }
+
+  void setAvatar(String avatar) {
+    this.user.avatar = avatar;
+    notifyListeners();
+  }
+
 }

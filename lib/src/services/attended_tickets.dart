@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:organiser_app/src/api/api_config.dart';
+import 'package:organiser_app/src/api/graphql_operations/queries.dart';
 import 'package:organiser_app/src/models/event_model.dart';
 import 'package:organiser_app/src/models/ticket_model.dart';
 import 'package:organiser_app/src/providers/user_provider.dart';
@@ -8,52 +9,13 @@ import 'package:provider/provider.dart';
 
 class AttendedTickets extends StatelessWidget {
 
-  final String attendedTicketsQuery = r"""
-  
-  
-query ($event_id: ID!)  {
-  attends 
-  (where: {
-    booking: {
-      event: {
-        id: $event_id
-      }
-    }
-  })
-  {
-    id
-    attend_user {
-      id
-      username
-    }
-    booking {
-      validity
-      id
-      event {
-        id
-        title
-      }
-      ticket {
-        id
-        name
-        quantity
-      }
-    }
-    
-  }
-}
-
-
-
-                  """;
-
   final Event event;
   AttendedTickets({this.event});
 
   @override
   Widget build(BuildContext context) {
 
-    final HttpLink httpLink = HttpLink(gqlUrl);
+    final HttpLink httpLink = HttpLink(kGraphQLURL);
     String token = Provider.of<UserProvider>(context).user.token;
 
     final AuthLink auth =
@@ -86,8 +48,6 @@ query ($event_id: ID!)  {
           }
 
           if (result.data == null) {
-            print(result.exception.toString());
-            print(event.id);
             return Center(
               child: Text(
                   'returned null'

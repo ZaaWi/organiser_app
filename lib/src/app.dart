@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final HttpLink httpLink = HttpLink(gqlUrl);
+    final HttpLink httpLink = HttpLink(kGraphQLURL);
     final ValueNotifier<GraphQLClient> loginClient = ValueNotifier<GraphQLClient>(
       GraphQLClient(
         link: httpLink,

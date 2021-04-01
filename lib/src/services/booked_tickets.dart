@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:organiser_app/src/api/api_config.dart';
+import 'package:organiser_app/src/api/graphql_operations/queries.dart';
 import 'package:organiser_app/src/models/event_model.dart';
 import 'package:organiser_app/src/models/ticket_model.dart';
 import 'package:organiser_app/src/providers/user_provider.dart';
@@ -9,49 +10,13 @@ import 'package:provider/provider.dart';
 
 class BookedTickets extends StatelessWidget {
 
-  final String getBookedTicketsQuery = r"""
-  
-  
-query ($event_id: ID!) {
-  bookzs 
-  (where: {
-    event: {
-      id: $event_id
-    }
-  },)
-  {
-    id
-    event {
-      id
-      title
-    }
-    ticket {
-      id
-      name
-      quantity
-    }
-    validity
-  }
-}
-
-
-
-                  """;
-
-  // Widget getBookedTicket (List<BookedTicket> tickets) {
-  //   List<Widget> list = List<Widget>();
-  //   for (var t in tickets) {
-  //
-  //   }
-  // }
-
   final Event event;
   BookedTickets({this.event});
 
   @override
   Widget build(BuildContext context) {
 
-    final HttpLink httpLink = HttpLink(gqlUrl);
+    final HttpLink httpLink = HttpLink(kGraphQLURL);
     String token = Provider.of<UserProvider>(context).user.token;
 
     final AuthLink auth =
@@ -71,7 +36,7 @@ query ($event_id: ID!) {
       client: createClient,
       child: Query(
         options: QueryOptions(
-          document: gql(getBookedTicketsQuery),
+          document: gql(getBookedTicketsQueryCopy),
           variables: {
             "event_id": event.id
           },
@@ -85,8 +50,6 @@ query ($event_id: ID!) {
           }
 
           if (result.data == null) {
-            print(result.exception.toString());
-            print(event.id);
             return Center(
               child: Text(
                 'returned null'
@@ -114,11 +77,6 @@ query ($event_id: ID!) {
             bookedTickets.add(ticket);
 
           }
-          print ('booked tickets');
-          print ('booked tickets: ${bookedTickets.length}');
-          // print('event tickets: ${tickets.length}');
-
-
           return Center(
             child: Card(
               child: Expanded(

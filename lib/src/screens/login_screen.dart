@@ -150,7 +150,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(height: 30,),
                       FlatButton(
                         onPressed: () {
-                          print('press');
                           Navigator.push(
                             context,
                             MaterialPageRoute(

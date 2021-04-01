@@ -176,11 +176,8 @@ class _EventFormScreenState extends State<EventFormScreen> {
                           dateLabelText: 'Date',
                           onChanged: (val) {
                             _dateTime = val;
-                            print(DateTimeFormat.format(
-                                DateTime.parse(_dateTime)));
                           },
                           validator: (val) {
-                            print(val);
                             if (val == null || val.isEmpty) {
                               return 'please pick a date';
                             }
@@ -250,7 +247,6 @@ class _EventFormScreenState extends State<EventFormScreen> {
                   ),
                 );
               } else {
-                print('_title : $_title widget title ${widget.event.title}');
                 eventService = EditEvent(
                   event: Event(
                     id: widget.event.id,

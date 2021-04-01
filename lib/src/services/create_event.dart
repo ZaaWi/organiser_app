@@ -2,6 +2,7 @@ import 'package:date_time_format/date_time_format.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:organiser_app/src/api/api_config.dart';
+import 'package:organiser_app/src/api/graphql_operations/mutations.dart';
 import 'package:organiser_app/src/models/event_model.dart';
 import 'package:organiser_app/src/providers/user_provider.dart';
 import 'package:organiser_app/src/screens/tickets_screen.dart';
@@ -12,41 +13,11 @@ class CreateEvent extends StatelessWidget {
   // int eventID;
   CreateEvent({@required this.event});
 
-  final String createEventMutation = r"""
-
-mutation createEvent ($title: String!, $description: String!, $category: ID!, $city: ID!,
- $image: [ID], $organiser: ID!, $date: DateTime!, $limit: Int!, $location: String!) {
-  createEvent 
-  (
-    input: {
-      data: {
-        title: $title,
-        description: $description,
-        category: $category,
-        city: $city,
-        image: $image,
-        organiser: $organiser,
-        date: $date,
-        limit: $limit,
-        location: $location,
-      }
-    }
-  ) {
-    event {
-      title
-      id
-    }
-  }
-  
-}
-
-
-                  """;
 
   @override
   Widget build(BuildContext context) {
     Event createdEvent;
-    final HttpLink httpLink = HttpLink(gqlUrl);
+    final HttpLink httpLink = HttpLink(kGraphQLURL);
     String token = Provider.of<UserProvider>(context).user.token;
 
     final AuthLink auth =

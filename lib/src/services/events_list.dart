@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:organiser_app/src/api/graphql_operations/queries.dart';
 import 'package:organiser_app/src/components/lists/event_list_item.dart';
 import 'package:organiser_app/src/models/city_model.dart';
 import 'package:organiser_app/src/models/event_model.dart';
@@ -19,52 +20,6 @@ class EventsList extends StatefulWidget {
 }
 
 class _EventsListState extends State<EventsList> {
-  final String getEventsQuery = r"""
-  
-  
-  
-query getMyEvents ($organiser_id: ID!) {
-  events 
-  (
-    where: {
-      organiser: {
-        id: $organiser_id
-      }
-    }
-  )
-  {
-    id
-    title
-    description
-    date
-    visitors
-    category {
-      id
-      name
-    }
-    image {
-      formats:url
-      id
-    }
-    limit
-    location
-    city {
-      name
-      id
-    }
-    tickts {
-      id
-      quantity
-      name
-    }
-  }
-}
-
-
-
-                  """;
-
-
 
   Widget getEventItems (List<Event> evs) {
     List<Widget> list = List<Widget>();
@@ -85,13 +40,14 @@ query getMyEvents ($organiser_id: ID!) {
   Widget build(BuildContext context) {
     return Query(
       options: QueryOptions(
-        document: gql(getEventsQuery),
+        document: gql(getEventsQueryCopy),
         variables: {
           'organiser_id': Provider.of<UserProvider>(context).user.id,
         },
       ),
       builder: (QueryResult result,
           {VoidCallback refetch, FetchMore fetchMore}) {
+
         if (result.isLoading) {
           return Center(
             child: CircularProgressIndicator(
@@ -134,11 +90,10 @@ query getMyEvents ($organiser_id: ID!) {
               name: e['city']['name'],
               id: int.parse(e['city']['id']),
             ),
-            category: e['category']['name'],
+            categoryName: e['category']['name'],
             categoryID: int.parse(e['category']['id']),
           );
           eventList.add(event);
-          print(e['date']);
         }
 
         return Column(

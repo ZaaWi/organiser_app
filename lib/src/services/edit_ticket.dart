@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:organiser_app/src/api/api_config.dart';
+import 'package:organiser_app/src/api/graphql_operations/mutations.dart';
 import 'package:organiser_app/src/models/ticket_model.dart';
 import 'package:organiser_app/src/providers/user_provider.dart';
 import 'package:provider/provider.dart';
@@ -11,34 +12,11 @@ class EditTicket extends StatelessWidget {
 
   EditTicket({this.ticket});
 
-  final String editTicketMutation = r"""
-  mutation editTicket ($ticket_ID: ID!, $name: String!, $quantity: Int!) {
-  updateTickt 
-  (
-    input: {
-      where: {
-        id: $ticket_ID
-      }
-      data: {
-        name: $name,
-        quantity: $quantity
-      }
-    }
-  )
-  {
-    tickt {
-      id
-    }
-  }
-}
-""";
-
-
   
   @override
   Widget build(BuildContext context) {
 
-    final HttpLink httpLink = HttpLink(gqlUrl);
+    final HttpLink httpLink = HttpLink(kGraphQLURL);
     String token = Provider.of<UserProvider>(context).user.token;
     final AuthLink auth =
         AuthLink(headerKey: 'Authorization', getToken: () => 'Bearer $token');

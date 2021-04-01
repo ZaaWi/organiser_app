@@ -1,133 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:organiser_app/src/api/api_config.dart';
+import 'package:organiser_app/src/api/graphql_operations/mutations.dart';
+import 'package:organiser_app/src/api/graphql_operations/queries.dart';
 import 'package:organiser_app/src/models/event_model.dart';
 import 'package:organiser_app/src/models/ticket_model.dart';
 import 'package:organiser_app/src/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
 class AttendTicket extends StatelessWidget {
-
-  final String getBookedTicketsQuery = r"""
-  
-  
-query ($booking_id: ID!, $event_id: ID!) {
-  bookzs 
-  (where: {
-    id: $booking_id,
-    ticket: {
-      event: {
-        id: $event_id
-      }
-    }
-  },)
-  {
-    id
-    booked_user{
-      id
-    }
-    ticket {
-      id
-      name
-      event{
-        id
-      }
-    }
-    validity
-  }
-}
-
-
-
-                  """;
-  final String getAttendedTicketsQuery = r"""
-  
-  
-query ($booking_id: ID!)  {
-  attends 
-  (where: {
-    booking: {
-      id: $booking_id
-    }
-  })
-  {
-    id
-    attend_user {
-      id
-      username
-    }
-    booking {
-      validity
-      id
-      event {
-        id
-        title
-      }
-      ticket {
-        id
-        name
-        quantity
-      }
-    }
-    
-  }
-}
-
-
-
-                  """;
-  final String createAttendMutation = r"""
-  
-  
-mutation createAttende ($booking_ID: ID!, $user_ID: ID!) {
-  createAttend (
-    input: {
-      data: {
-        booking: $booking_ID,
-        attend_user: $user_ID
-      }
-    }
-  ) {
-    attend {
-      id
-    }
-  }
-}
-
-
-
-                  """;
-  final String decreaseValidityMutation = r"""
-  
-  
-mutation decreaseValidity ($booking_ID: ID!, $validity: Int!) {
-  updateBookz(
-    input: {
-      where: {
-        id: $booking_ID
-      }
-      data: {
-        validity: $validity
-      }
-    }
-  ) {
-    bookz {
-      id
-    }
-  }
-}
-
-
-
-                  """;
-
   final Event event;
   final int bookingID;
   AttendTicket({this.event, this.bookingID});
 
   @override
   Widget build(BuildContext context) {
-    final HttpLink httpLink = HttpLink(gqlUrl);
+    final HttpLink httpLink = HttpLink(kGraphQLURL);
     String token = Provider.of<UserProvider>(context).user.token;
 
     final AuthLink auth =

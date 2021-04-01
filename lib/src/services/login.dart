@@ -1,50 +1,23 @@
-
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:organiser_app/src/api/api_config.dart';
+import 'package:organiser_app/src/api/graphql_operations/mutations.dart';
+import 'package:organiser_app/src/api/graphql_operations/queries.dart';
 import 'package:organiser_app/src/providers/user_provider.dart';
 import 'package:organiser_app/src/screens/app_screen.dart';
 import 'package:provider/provider.dart';
 
-
-
-
 class Login extends StatelessWidget {
-
-  final String loginQuery = r"""
-                  mutation {
-  login(input: { identifier: "zawi", password: "Zawi123" }) {
-    jwt
-    user {
-      username
-      id
-      email
-      role {
-        id
-      }
-      
-      
-      
-      
-    }
-  }
-}
-
-
-                  """;
-
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       body: Query(
         options: QueryOptions(
-          document: gql(loginQuery),
+          document: gql(loginMutation),
         ),
         builder: (QueryResult result,
-            {VoidCallback refetch, FetchMore fetchMore}
-        ) {
+            {VoidCallback refetch, FetchMore fetchMore}) {
           if (result.isLoading) {
             return Center(
               child: CircularProgressIndicator(
@@ -59,22 +32,57 @@ class Login extends StatelessWidget {
               ),
             );
           }
-
-          print('all data');
-          print(result.data);
-          print('jwt');
-          print(result.data['login']['jwt']);
-          print(result.data['login']['user']['username']);
-          print(result.data['login']['user']['id']);
-          //TODO: check the user rule :
           Provider.of<UserProvider>(context).setUserData(
             token: result.data['login']['jwt'],
             id: int.parse(result.data['login']['user']['id']),
             userName: result.data['login']['user']['username'],
           );
+          //TODO: check the user rule :
+
+          final HttpLink httpLink = HttpLink(kGraphQLURL);
+          String token = Provider.of<UserProvider>(context).user.token;
+
+          final AuthLink auth =
+          AuthLink(headerKey: 'Authorization', getToken: () => 'Bearer $token');
+          final Link link = auth.concat(httpLink);
+
+          final ValueNotifier<GraphQLClient> userClient = ValueNotifier<GraphQLClient>(
+            GraphQLClient(
+              link: link,
+              cache: GraphQLCache(),
+            ),
+          );
+
+          return GraphQLProvider(
+            client: userClient,
+            child: Query(
+                options: QueryOptions(
+                  document: gql(getUserImageQuery),
+                  variables: {
+                    "id": int.parse(result.data['login']['user']['id'])
+                  }
+                ),
+                builder: (QueryResult imageResult,
+                    {VoidCallback refetch, FetchMore fetchMore}) {
+                  if (imageResult.isLoading) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if(imageResult.data == null) {
+                    return Center(
+                      child: Text(
+                        'returnned null'
+                      ),
+                    );
+                  }
+                  Provider.of<UserProvider>(context).setAvatar(imageResult.data['users'][0]['avatar']['url']);
 
 
-          return AppScreen();
+
+                  return AppScreen();
+                }),
+          );
         },
       ),
     );

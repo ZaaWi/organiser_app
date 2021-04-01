@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:organiser_app/src/api/graphql_operations/queries.dart';
 import 'package:organiser_app/src/components/lists/event_list_item.dart';
 import 'package:organiser_app/src/models/event_model.dart';
 import 'package:organiser_app/src/models/ticket_model.dart';
@@ -14,40 +15,6 @@ class AttendanceEventList extends StatefulWidget {
 }
 
 class _AttendanceEventListState extends State<AttendanceEventList> {
-
-  final String getEventsQuery = r"""
-  
-  
-query getMyEvents ($organiser_id: ID!) {
-  events 
-  (
-    where: {
-      organiser: {
-        id: $organiser_id
-      }
-    }
-  )
-  {
-    id
-    visitors
-    title
-    limit
-    location
-    city {
-      name
-    }
-    tickts {
-      id
-      quantity
-      name
-    }
-  }
-}
-
-
-
-                  """;
-
   Widget getEventItems (List<Event> evs) {
     List<Widget> list = List<Widget>();
     for (Event e in evs) {
@@ -64,7 +31,6 @@ query getMyEvents ($organiser_id: ID!) {
   }
   @override
   Widget build(BuildContext context) {
-    print('user id : ${Provider.of<UserProvider>(context).user.id}');
     return Query(
       options: QueryOptions(
         document: gql(getEventsQuery),
@@ -108,7 +74,6 @@ query getMyEvents ($organiser_id: ID!) {
             id: int.parse(e['id']),
           );
           eventList.add(event);
-          print(e['date']);
         }
         return Column(
           children: [

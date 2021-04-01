@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:organiser_app/src/api/api_config.dart';
+import 'package:organiser_app/src/api/graphql_operations/mutations.dart';
 import 'package:organiser_app/src/models/ticket_model.dart';
 import 'package:organiser_app/src/providers/user_provider.dart';
 import 'package:organiser_app/src/screens/app_screen.dart';
@@ -12,35 +13,10 @@ class CreateTicket extends StatelessWidget {
 
   CreateTicket({this.ticket,});
 
-  final String createTicketMutation = r"""
-
-mutation createTicket ($name: String!, $event_ID: ID!, $quantity: Int!) {
-  createTickt 
-  (
-    input: {
-      data: {
-        name: $name,
-        quantity: $quantity,
-        event: $event_ID,
-      }
-    }
-  ) {
-    tickt {
-      name
-      id
-    }
-  }
-  
-}
-
-
-
-                  """;
-
   @override
   Widget build(BuildContext context) {
 
-    final HttpLink httpLink = HttpLink(gqlUrl);
+    final HttpLink httpLink = HttpLink(kGraphQLURL);
     String token = Provider.of<UserProvider>(context).user.token;
 
     final AuthLink auth =
@@ -62,7 +38,6 @@ mutation createTicket ($name: String!, $event_ID: ID!, $quantity: Int!) {
         options: MutationOptions(
           document: gql(createTicketMutation),
           onCompleted: (dynamic resultData) {
-            print(resultData);
             Navigator.pop(context);
             Navigator.pop(context);
             Navigator.push(
@@ -97,7 +72,6 @@ mutation createTicket ($name: String!, $event_ID: ID!, $quantity: Int!) {
                     "quantity": ticket.quantity,
                     "event_ID": ticket.event.id,
                   });
-                  print(result.exception.toString());
 
                 },
               ),

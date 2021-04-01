@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:organiser_app/src/api/api_config.dart';
 import 'package:organiser_app/src/providers/upload_provider.dart';
+import 'package:organiser_app/src/providers/user_provider.dart';
 import 'package:organiser_app/src/screens/event_form_screen.dart';
 import 'package:organiser_app/src/services/events_list.dart';
 import 'package:provider/provider.dart';
-
 
 class EventsScreen extends StatefulWidget {
   @override
@@ -11,6 +12,7 @@ class EventsScreen extends StatefulWidget {
 }
 
 class _EventsScreenState extends State<EventsScreen> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,43 +31,46 @@ class _EventsScreenState extends State<EventsScreen> {
         ),
         actions: <Widget>[
           //TODO: user avatar
-          // Padding(
-          //   padding: EdgeInsets.all(10.0),
-          //   child: Container(
-          //     width: 35,
-          //     height: 35,
-          //     decoration: BoxDecoration(
-          //       borderRadius: BorderRadius.circular(10),
-          //       image: DecorationImage(
-          //         //TODO: fix this image.
-          //         image: AssetImage('assets/images/four.jpg'),
-          //         fit: BoxFit.cover,
-          //       ),
-          //     ),
-          //     child: Transform.translate(
-          //       offset: Offset(15, -15),
-          //       child: Container(
-          //         margin: EdgeInsets.all(10),
-          //         decoration: BoxDecoration(
-          //             border: Border.all(width: 3, color: Colors.white),
-          //             shape: BoxShape.circle,
-          //             color: Colors.yellow[800]),
-          //       ),
-          //     ),
-          //   ),
-          // ),
+          Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Container(
+              width: 35,
+              height: 35,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                image: DecorationImage(
+                  //TODO: fix this image.
+                  image: NetworkImage(
+                      '$kApiKey${Provider.of<UserProvider>(context).user.avatar}'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Transform.translate(
+                offset: Offset(15, -15),
+                child: Container(
+                  margin: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      border: Border.all(width: 3, color: Colors.white),
+                      shape: BoxShape.circle,
+                      color: Colors.green),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: ListView(
           padding: EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              EventsList(),
-              // ItemsCardList(),
-            ],
-          ),
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                EventsList(),
+                // ItemsCardList(),
+              ],
+            ),
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(

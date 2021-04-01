@@ -2,6 +2,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:organiser_app/src/api/api_config.dart';
+import 'package:organiser_app/src/api/graphql_operations/queries.dart';
 import 'package:organiser_app/src/models/category_model.dart';
 import 'package:organiser_app/src/models/city_model.dart';
 import 'package:organiser_app/src/models/event_model.dart';
@@ -39,30 +40,10 @@ class _EventsCategoriesAndCitiesState extends State<EventsCategoriesAndCities> {
   int chosenCategoryID;
   int chosenCityID;
 
-  final String categoriesQuery = r"""
-
-query getCategories {
-  categories {
-    id
-    name
-  }
-}
-
-                  """;
-  final String citiesQuery = r"""
-
-query getCities {
-  cities {
-    id
-    name
-  }
-}
-
-                  """;
 
   @override
   Widget build(BuildContext context) {
-    final HttpLink httpLink = HttpLink(gqlUrl);
+    final HttpLink httpLink = HttpLink(kGraphQLURL);
     String token = Provider.of<UserProvider>(context).user.token;
 
     final AuthLink auth =
@@ -93,7 +74,6 @@ query getCities {
             );
           }
           if (categoriesResult.data == null) {
-            print(categoriesResult.exception);
             return Center(
               child: CircularProgressIndicator(
                 backgroundColor: Colors.red,
@@ -131,8 +111,6 @@ query getCities {
                 );
               }
               List<City> cities = [];
-              print(citiesResult.data);
-              print(citiesResult.data['cities']);
               for (var c in citiesResult.data['cities']) {
                 City city = City(
                   id: int.parse(c['id']),
@@ -151,7 +129,7 @@ query getCities {
                     child: Padding(
                       padding: EdgeInsets.all(15),
                       child: DropdownSearch<String>(
-                        selectedItem: widget.formType == 'EDIT' ? widget.event.category : null,
+                        selectedItem: widget.formType == 'EDIT' ? widget.event.categoryName : null,
                         showSearchBox: true,
                         mode: Mode.DIALOG,
                         showSelectedItem: true,

@@ -2,6 +2,7 @@ import 'package:date_time_format/date_time_format.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:organiser_app/src/api/api_config.dart';
+import 'package:organiser_app/src/api/graphql_operations/mutations.dart';
 import 'package:organiser_app/src/models/event_model.dart';
 import 'package:organiser_app/src/providers/user_provider.dart';
 import 'package:provider/provider.dart';
@@ -12,45 +13,12 @@ class EditEvent extends StatelessWidget {
 
 
   EditEvent({this.event});
-  final String editEventMutation = r"""
-  
-  
-   mutation EditEvent ($image_ID: [ID], $title: String!, $description: String!, $location: String!, 
-$limit: Int! $date: DateTime! $category: ID!, $city: ID!, $event_ID: ID!) {
-  updateEvent (
-    input: {
-      where: {
-        id: $event_ID
-      }
-      data: {
-        title: $title,
-        description: $description,
-        location: $location,
-        limit: $limit,
-        category: $category,
-        city: $city,
-        image: $image_ID,
-        date: $date,
-      }
-    }
-  )  {
-    event {
-      id
-      title
-    }
-  }
-}
-
-
-
-                  """;
-
 
 
   @override
   Widget build(BuildContext context) {
 
-    final HttpLink httpLink = HttpLink(gqlUrl);
+    final HttpLink httpLink = HttpLink(kGraphQLURL);
     String token = Provider.of<UserProvider>(context).user.token;
 
     final AuthLink auth =
@@ -72,7 +40,6 @@ $limit: Int! $date: DateTime! $category: ID!, $city: ID!, $event_ID: ID!) {
         options: MutationOptions(
           document: gql(editEventMutation),
           onCompleted: (dynamic resultData) {
-            print(resultData);
             Navigator.pop(context);
           }
         ),
@@ -80,9 +47,6 @@ $limit: Int! $date: DateTime! $category: ID!, $city: ID!, $event_ID: ID!) {
         RunMutation runMutation,
             QueryResult result
         ) {
-          print(result.exception.toString());
-
-
           return AlertDialog(
             content: Text(
               'edit ?',

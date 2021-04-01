@@ -115,7 +115,7 @@ query attendanceCount ($user_ID: ID!) {
 
   @override
   Widget build(BuildContext context) {
-    final HttpLink httpLink = HttpLink(gqlUrl);
+    final HttpLink httpLink = HttpLink(kGraphQLURL);
     String token = Provider.of<UserProvider>(context).user.token;
 
     final AuthLink auth =

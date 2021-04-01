@@ -1,3 +1,4 @@
+import 'package:organiser_app/src/models/category_model.dart';
 import 'package:organiser_app/src/models/city_model.dart';
 import 'package:organiser_app/src/models/ticket_model.dart';
 import 'package:intl/intl.dart';
@@ -19,7 +20,8 @@ class Event {
   String imageID;
   int categoryID;
   City cityObject;
-  String category;
+  String categoryName;
+  Category category;
 
   Event({
     this.id,
@@ -37,6 +39,7 @@ class Event {
     this.categoryID,
     this.cityID,
     this.cityObject,
+    this.categoryName,
     this.category,
   });
 

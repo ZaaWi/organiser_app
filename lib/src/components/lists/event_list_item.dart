@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:organiser_app/src/api/api_config.dart';
 import 'package:organiser_app/src/models/event_model.dart';
@@ -14,7 +13,7 @@ Widget listItem({BuildContext context, Event event}) {
     child: ListTile(
       leading: CircleAvatar(
         radius: 30,
-        backgroundImage: NetworkImage('$apiUrl${event.img}'),
+        backgroundImage: NetworkImage('$kApiKey${event.img}'),
       ),
       title: Text(event.title),
       subtitle: Text(
