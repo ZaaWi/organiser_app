@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:organiser_app/src/localization/translate_helper.dart';
 import 'package:organiser_app/src/models/event_model.dart';
 import 'package:organiser_app/src/screens/ticket_form_screen.dart';
 import 'package:organiser_app/src/services/tickets_list.dart';
@@ -17,7 +18,7 @@ class _TicketScreenState extends State<TicketScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('tickets'),
+        title: Text(getTranslate(context, "Tickets")),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20),

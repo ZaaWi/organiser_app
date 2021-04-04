@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:organiser_app/src/localization/translate_helper.dart';
 import 'package:organiser_app/src/models/event_model.dart';
 import 'package:organiser_app/src/models/ticket_model.dart';
 import 'package:organiser_app/src/services/createTicket.dart';
@@ -48,7 +49,7 @@ class _TicketFormScreenState extends State<TicketFormScreen> {
                   ? Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Ticket name'),
+                        Text(getTranslate(context, "Ticket_name")),
                         SizedBox(
                           height: 15,
                         ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:organiser_app/src/localization/translate_helper.dart';
 
 class DashboardEventsCard extends StatelessWidget {
   const DashboardEventsCard({
@@ -47,7 +48,7 @@ class DashboardEventsCard extends StatelessWidget {
                   ],
                 ),
               ),
-              title: Text('Today'),
+              title: Text(getTranslate(context, "today")),
               subtitle: Text('2 events'),
             ),
           ),

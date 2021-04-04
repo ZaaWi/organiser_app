@@ -1,8 +1,8 @@
-import 'package:date_time_format/date_time_format.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:organiser_app/src/components/eventForm/form_image.dart';
 import 'package:organiser_app/src/components/eventForm/ticket_form_btn.dart';
+import 'package:organiser_app/src/localization/translate_helper.dart';
 import 'package:organiser_app/src/models/event_model.dart';
 import 'package:organiser_app/src/providers/upload_provider.dart';
 import 'package:organiser_app/src/services/create_event.dart';
@@ -61,7 +61,7 @@ class _EventFormScreenState extends State<EventFormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Event ${widget.formType} Form'),
+        title: Text(getTranslate(context, "event_${widget.formType}_form")),
       ),
       body: Padding(
         padding: EdgeInsets.all(16),
@@ -83,7 +83,7 @@ class _EventFormScreenState extends State<EventFormScreen> {
                         SizedBox(
                           height: 15,
                         ),
-                        Text('title'),
+                        Text(getTranslate(context, "title")),
                         TextFormField(
                           initialValue: widget.formType == 'EDIT'
                               ? widget.event.title
@@ -91,7 +91,7 @@ class _EventFormScreenState extends State<EventFormScreen> {
                           // controller: nameController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'please enter title';
+                              return getTranslate(context, "please_enter_title");
                             }
                             return null;
                           },
@@ -102,7 +102,7 @@ class _EventFormScreenState extends State<EventFormScreen> {
                         SizedBox(
                           height: 15,
                         ),
-                        Text('description'),
+                        Text(getTranslate(context, "description"),),
                         TextFormField(
                           initialValue: widget.formType == 'EDIT'
                               ? widget.event.description
@@ -110,7 +110,7 @@ class _EventFormScreenState extends State<EventFormScreen> {
                           // controller: descriptionController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'please enter description';
+                              return getTranslate(context, "please_enter_description");
                             }
                             return null;
                           },
@@ -121,7 +121,7 @@ class _EventFormScreenState extends State<EventFormScreen> {
                         SizedBox(
                           height: 15,
                         ),
-                        Text('location'),
+                        Text(getTranslate(context, "location")),
                         TextFormField(
                           initialValue: widget.formType == 'EDIT'
                               ? widget.event.location
@@ -129,7 +129,7 @@ class _EventFormScreenState extends State<EventFormScreen> {
                           // controller: descriptionController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'please enter location';
+                              return getTranslate(context, "please_enter_location");
                             }
                             return null;
                           },
@@ -140,7 +140,7 @@ class _EventFormScreenState extends State<EventFormScreen> {
                         SizedBox(
                           height: 15,
                         ),
-                        Text('limit'),
+                        Text(getTranslate(context, "limit")),
                         TextFormField(
                           initialValue: widget.formType == 'EDIT'
                               ? widget.event.limit.toString()
@@ -150,9 +150,9 @@ class _EventFormScreenState extends State<EventFormScreen> {
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               if (isNumeric(value)) {
-                                return 'value has to be number';
+                                return getTranslate(context, "value_has_to_be_number");
                               }
-                              return 'please enter the limit';
+                              return getTranslate(context, "please_enter_the_limit");
                             }
                             return null;
                           },
@@ -164,7 +164,7 @@ class _EventFormScreenState extends State<EventFormScreen> {
                         SizedBox(
                           height: 15,
                         ),
-                        Text('event date'),
+                        Text(getTranslate(context, "event_date")),
                         DateTimePicker(
                           type: DateTimePickerType.dateTime,
                           initialValue: widget.formType == 'EDIT'
@@ -173,13 +173,13 @@ class _EventFormScreenState extends State<EventFormScreen> {
                           firstDate: DateTime(2000),
                           lastDate: DateTime(2100),
                           icon: Icon(Icons.event),
-                          dateLabelText: 'Date',
+                          dateLabelText: getTranslate(context, "Date"),
                           onChanged: (val) {
                             _dateTime = val;
                           },
                           validator: (val) {
                             if (val == null || val.isEmpty) {
-                              return 'please pick a date';
+                              return getTranslate(context, "please_pick_a_date");
                             }
                             return null;
                           },
@@ -188,7 +188,7 @@ class _EventFormScreenState extends State<EventFormScreen> {
                         SizedBox(
                           height: 15,
                         ),
-                        Text('Categories'),
+                        Text(getTranslate(context, "Categories")),
                         EventsCategoriesAndCities(
                           cityCallback: (
                             id,
@@ -207,7 +207,7 @@ class _EventFormScreenState extends State<EventFormScreen> {
                           event: widget.event,
                           formType: widget.formType,
                         ),
-                        widget.formType == 'EDIT' ? Text('Tickets') : Container(),
+                        widget.formType == 'EDIT' ? Text(getTranslate(context, "Tickets")) : Container(),
                         SizedBox(
                           height: 15,
                         ),

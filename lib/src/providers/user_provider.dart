@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:organiser_app/src/models/user_model.dart';
 
@@ -12,12 +11,14 @@ class UserProvider extends ChangeNotifier {
     String userName,
     String token,
     String avatar,
+    String email,
   }) {
     this.user = User(
       id: id,
       userName: userName,
       token: token,
       avatar: avatar,
+      email: email,
     );
     notifyListeners();
   }

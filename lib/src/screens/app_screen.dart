@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:organiser_app/src/api/api_config.dart';
+import 'package:organiser_app/src/app.dart';
 import 'package:organiser_app/src/components/navigationbar/bottom_nav.dart';
 import 'package:organiser_app/src/providers/user_provider.dart';
+import 'package:organiser_app/src/screens/account_screen.dart';
 import 'package:organiser_app/src/screens/attendance_screen.dart';
 import 'package:organiser_app/src/screens/dashboard_screen.dart';
 import 'package:organiser_app/src/screens/events_screen.dart';
@@ -15,6 +17,22 @@ class AppScreen extends StatefulWidget {
 
 class _AppScreenState extends State<AppScreen> {
   int _currentPage;
+
+  void changeLanguage(String langCode) {
+    Locale _temp;
+    switch (langCode) {
+      case "en":
+        _temp = Locale(langCode, "US");
+        break;
+      case "ar":
+        _temp = Locale(langCode, "LY");
+        break;
+
+      default:
+        _temp = Locale(langCode, "US");
+    }
+    MyApp.setLocale(context, _temp);
+  }
 
   @override
   void initState() {
@@ -35,13 +53,20 @@ class _AppScreenState extends State<AppScreen> {
           ),
         );
       case 3:
-        return Center(
-          child: Container(
-            child: Text('account'),
-          ),
-        );
+        return AccountScreen();
     }
   }
+
+  // Center(
+  // child: Container(
+  // child: FlatButton(
+  // child: Text(getTranslate(context, 'account')),
+  // onPressed: () {
+  // changeLanguage('ar');
+  // },
+  // ),
+  // ),
+  // );
 
   @override
   Widget build(BuildContext context) {

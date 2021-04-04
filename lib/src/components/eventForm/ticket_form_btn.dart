@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:organiser_app/src/localization/translate_helper.dart';
 import 'package:organiser_app/src/models/event_model.dart';
 import 'package:organiser_app/src/screens/tickets_screen.dart';
 
@@ -28,7 +29,7 @@ class TicketFormBtn extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(
               vertical: 10, horizontal: 5),
-          child: Text('Add tickets'),
+          child: Text(getTranslate(context, "Add_tickets")),
         ),
       ),
       onPressed: () {

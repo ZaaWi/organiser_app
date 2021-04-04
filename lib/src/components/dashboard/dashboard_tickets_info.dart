@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:organiser_app/src/components/dashboard/dashboard_card.dart';
+import 'package:organiser_app/src/localization/translate_helper.dart';
 
 class DashboardTicketsInfo extends StatelessWidget {
   final int tickets;
@@ -19,7 +20,7 @@ class DashboardTicketsInfo extends StatelessWidget {
             child: dashboardCard(
               color: Colors.blue,
               icon: Icons.confirmation_num_outlined,
-              title: 'Tickets',
+              title: getTranslate(context, "Tickets"),
               data: tickets.toString(),
             ),
           ),
@@ -28,7 +29,7 @@ class DashboardTicketsInfo extends StatelessWidget {
             child: dashboardCard(
               color: Colors.blue,
               icon: Icons.bookmarks_outlined,
-              title: 'Booked',
+              title: getTranslate(context, "booked"),
               data: booked.toString(),
             ),
           ),
@@ -37,7 +38,7 @@ class DashboardTicketsInfo extends StatelessWidget {
             child: dashboardCard(
               color: Colors.blue,
               icon: Icons.style_outlined,
-              title: 'Attended',
+              title: getTranslate(context, "attended"),
               data: attended.toString(),
             ),
           ),

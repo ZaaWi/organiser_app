@@ -36,6 +36,7 @@ class Login extends StatelessWidget {
             token: result.data['login']['jwt'],
             id: int.parse(result.data['login']['user']['id']),
             userName: result.data['login']['user']['username'],
+            email: result.data['login']['user']['email'],
           );
           //TODO: check the user rule :
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:organiser_app/src/components/animations/fade_animation.dart';
+import 'package:organiser_app/src/localization/translate_helper.dart';
 import 'package:organiser_app/src/services/login.dart';
 
 
@@ -74,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: FadeAnimation(1.6, Container(
                           margin: EdgeInsets.only(top: 50),
                           child: Center(
-                            child: Text("Login", style: TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),),
+                            child: Text(getTranslate(context, "Login"), style: TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),),
                           ),
                         )),
                       ),
@@ -123,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: TextField(
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
-                                  hintText: "Email or Phone number",
+                                  hintText: getTranslate(context, "email_or_username"),
                                   hintStyle: TextStyle(color: Colors.grey[400]),
                                 ),
                                 onChanged: (newValue) {
@@ -136,7 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: TextField(
                                 decoration: InputDecoration(
                                     border: InputBorder.none,
-                                    hintText: "Password",
+                                    hintText: getTranslate(context, "password"),
                                     hintStyle: TextStyle(color: Colors.grey[400])
                                 ),
                                 onChanged: (newValue) {
@@ -175,12 +176,12 @@ class _LoginScreenState extends State<LoginScreen> {
                               )
                           ),
                           child: Center(
-                            child: Text("Login", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                            child: Text(getTranslate(context, "Login"), style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
                           ),
                         )),
                       ),
                       SizedBox(height: 70,),
-                      FadeAnimation(1.5, Text("Forgot Password?", style: TextStyle(color: Color.fromRGBO(143, 148, 251, 1)),)),
+                      FadeAnimation(1.5, Text(getTranslate(context, "Forgot_Password"), style: TextStyle(color: Color.fromRGBO(143, 148, 251, 1)),)),
                     ],
                   ),
                 )
